@@ -7,48 +7,33 @@ import org.springframework.stereotype.Component;
 @Component
 public class DatabaseLoader implements CommandLineRunner {
 
-	private final InstrumentoRepository repositoryI;
-	private final MusicoRepository repositoryM;
-	private final BandaRepository repositoryB;
-	private final IntegranteRepository repositoryN;
+	private final ProductoRepository pr;
+	private final CategoriaRepository cr;
 
 	@Autowired
 	public DatabaseLoader(
-		InstrumentoRepository repositoryI,
-		MusicoRepository repositoryM,
-		BandaRepository repositoryB,
-		IntegranteRepository repositoryN
+		ProductoRepository pr,
+		CategoriaRepository cr
 		) {
-		this.repositoryI = repositoryI;
-		this.repositoryM = repositoryM;
-		this.repositoryB = repositoryB;
-		this.repositoryN = repositoryN;
+		this.pr=pr;
+		this.cr=cr;
 	}
 
 	@Override
 	public void run(String... strings) throws Exception {
+		Categoria autos=new Categoria("Autos");
+		Categoria bicis=new Categoria("Bicicletas");
+		Categoria motos=new Categoria("Motos");
+		this.cr.save(autos);
+		this.cr.save(bicis);
+		this.cr.save(motos);
+		
+		Producto auto1=new Producto("BMV",35000.00f,autos);
+		Producto bicis1=new Producto("BMX",4500.00f,bicis);
+		Producto motos1=new Producto("Rays",50000.00f,motos);
 
-		this.repositoryI.save(new Instrumento("Guitarra", "Cuerda", "de madera, con caja de resonancia, 6 cuerdas templadas"));
-		this.repositoryI.save(new Instrumento("Ukelele","Cuerda","de madera, con caja de resonancia pequeña, 4 cuerdas templadas"));
-		this.repositoryI.save(new Instrumento("Melódica","Viento","teclado pequeño de 2 octavas, sonorizado por soplido"));
-		Instrumento iVoz = new Instrumento("Voz","Viento",".");
-		this.repositoryI.save(iVoz);
-		Instrumento iGuitarraElectrica = new Instrumento("Guitarra Electrica","Electrónico", ".");
-		this.repositoryI.save(iGuitarraElectrica);
-		this.repositoryI.save(new Instrumento("Batería","Percusión","."));
-
-		this.repositoryM.save(new Musico("Daniel F"));
-		Musico mFreddy = new Musico("Freddy");
-		this.repositoryM.save(mFreddy);
-		Musico mBrian = new Musico("Brian");
-		this.repositoryM.save(mBrian);
-
-		Banda bQueen = new Banda("Queen");
-		this.repositoryB.save(bQueen);
-
-		this.repositoryN.save(new Integrante(bQueen, mFreddy, iVoz));
-		this.repositoryN.save(new Integrante(bQueen, mBrian, iGuitarraElectrica));
-
-
+		this.pr.save(auto1);
+		this.pr.save(bicis1);
+		this.pr.save(motos1);
 	}
 }
